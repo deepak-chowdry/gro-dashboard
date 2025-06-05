@@ -7,7 +7,7 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const secret = process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY; // Add this to your env variables
+  const secret = process.env.ELEVENLABS_WEBHOOK_SECRET; // Add this to your env variables
   const { event, error } = await constructWebhookEvent(req, secret);
   if (error) {
     return NextResponse.json({ error: error }, { status: 401 });
