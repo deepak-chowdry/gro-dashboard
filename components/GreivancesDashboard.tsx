@@ -104,7 +104,7 @@ export default function GrievancesDashboard() {
                 // Sort by priority first (high priority first)
                 const priorityDiff = getPriorityOrder(a.priority) - getPriorityOrder(b.priority);
                 if (priorityDiff !== 0) return priorityDiff;
-                
+
                 // If priorities are equal, sort by creation date (newest first)
                 return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
             });
@@ -188,32 +188,33 @@ export default function GrievancesDashboard() {
                     className="bg-white rounded-lg border border-gray-200 hover:shadow-md transition-shadow p-4 cursor-pointer"
                 >
                     <div className="flex items-center justify-between">
-                        <div className="flex-1">
+                        <div className="flex-1 space-y-3">
                             <div className="flex items-center gap-3 mb-2">
                                 <h3 className="font-medium text-gray-900">{grievanceItem.title}</h3>
                                 {grievanceItem.status === 'urgent' && <AlertCircle className="w-4 h-4 text-red-500" />}
                                 {grievanceItem.reformed_flag && <Folder className="w-4 h-4 text-yellow-600" />}
                             </div>
-                            <p className="text-sm text-gray-600 mb-2">{grievanceItem.description}</p>
+                            <p className="text-sm text-gray-600 mb-2">{grievanceItem.description.slice(0, 200)}...</p>
                             <div className="flex items-center gap-4">
                                 <span className="text-sm text-blue-600">{grievanceItem.cpgrams_category}</span>
                                 <span className="text-sm text-gray-500">{formatDate(grievanceItem.created_at)}</span>
-                                <span className={`text-xs px-2 py-1 rounded-full ${grievanceItem.status === 'resolved' ? 'bg-green-100 text-green-700' :
-                                    grievanceItem.status === 'in_progress' ? 'bg-blue-100 text-blue-700' :
-                                        grievanceItem.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
-                                            'bg-gray-100 text-gray-700'
-                                    }`}>
-                                    {grievanceItem.status.replace('_', ' ')}
-                                </span>
+
 
                             </div>
+                            <div className="flex items-center justify-between">
+
+                                <p className={`text-xs rounded-full capitalize `}>
+                                    Status: {grievanceItem.status.replace('_', ' ')}
+                                </p>
+                                <p className={`text-xs font-normal py-1 rounded-md capitalize`}>
+                                    Priority: <span className={` ${grievanceItem.priority === 'high' ? 'text-red-700' :
+                                        grievanceItem.priority === 'medium' ? 'text-yellow-700' :
+                                            'text-green-700'
+                                        }`}>{grievanceItem.priority}</span>
+                                </p>
+                            </div>
                         </div>
-                        <span className={`text-xs font-normal py-1 px-3 rounded-md capitalize ${grievanceItem.priority === 'high' ? 'bg-red-100 text-red-700' :
-                            grievanceItem.priority === 'medium' ? 'bg-yellow-100 text-yellow-700' :
-                                'bg-green-100 text-green-700'
-                            }`}>
-                            {grievanceItem.priority}
-                        </span>
+
                     </div>
                 </div>
             ))}

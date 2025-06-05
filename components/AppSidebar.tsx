@@ -1,4 +1,5 @@
-import { Megaphone, Settings } from "lucide-react"
+"use client"
+import { LayoutDashboard, Megaphone } from "lucide-react"
 
 import {
     Sidebar,
@@ -14,18 +15,21 @@ import {
 // Menu items.
 const items = [
     {
+        title: "Dashboard",
+        url: "/dashboard",
+        icon: LayoutDashboard,
+    },
+    {
         title: "Grievances",
         url: "/greivances",
         icon: Megaphone,
     },
-    {
-        title: "Settings",
-        url: "#",
-        icon: Settings,
-    },
 ]
 
+import { usePathname } from "next/navigation"
+
 export function AppSidebar() {
+    const pathname = usePathname();
     return (
         <Sidebar collapsible="icon">
             <SidebarHeader className="h-14">
@@ -40,16 +44,22 @@ export function AppSidebar() {
                 <SidebarGroup>
                     <SidebarGroupContent>
                         <SidebarMenu>
-                            {items.map((item) => (
-                                <SidebarMenuItem key={item.title}>
-                                    <SidebarMenuButton asChild>
-                                        <a href={item.url}>
-                                            <item.icon />
-                                            <span>{item.title}</span>
-                                        </a>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                            ))}
+                            {items.map((item) => {
+                                const isActive = pathname === item.url;
+                                return (
+                                    <SidebarMenuItem
+                                        key={item.title}
+                                        className={isActive ? "bg-muted text-black" : "text-muted-foreground"}
+                                    >
+                                        <SidebarMenuButton asChild>
+                                            <a href={item.url}>
+                                                <item.icon />
+                                                <span>{item.title}</span>
+                                            </a>
+                                        </SidebarMenuButton>
+                                    </SidebarMenuItem>
+                                );
+                            })}
                         </SidebarMenu>
                     </SidebarGroupContent>
                 </SidebarGroup>
