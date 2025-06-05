@@ -1,6 +1,6 @@
-import { useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { ElevenLabsClient } from "elevenlabs";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from "sonner";
 import { api } from "../convex/_generated/api";
 import { Button } from './ui/button';
@@ -10,12 +10,25 @@ import { Textarea } from './ui/textarea';
 const client = new ElevenLabsClient({ apiKey: process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY });
 
 
-const Notify = () => {
+type Conversation = {
+    _id: string;
+    groQuery: string;
+    convoId: string;
+    response?: string;
+};
 
+const Notify = () => {
     const [message, setMessage] = useState('')
-    // const [conversation, setConversation] = useState([])
-    // const getConversation = useQuery(api.conversation.getConversation)
-    const createConversation = useMutation(api.conversation.createConversation)
+    const [conversation, setConversation] = useState<Conversation[]>([]);
+    const conversationsData = useQuery(api.conversation.getConversation);
+    const createConversation = useMutation(api.conversation.createConversation);
+
+    // Sync local state with query result
+    useEffect(() => {
+        if (Array.isArray(conversationsData)) {
+            setConversation(conversationsData);
+        }
+    }, [conversationsData]);
 
     const handleNotify = async () => {
         try {
@@ -25,7 +38,7 @@ const Notify = () => {
                 to_number: "+9196631 00122",
                 conversation_initiation_client_data: {
                     dynamic_variables: {
-                        "user_name": "Angelo",
+                        "user_name": "Madhu",
                         "information": message
                     }
                 }
@@ -80,12 +93,19 @@ const Notify = () => {
                         <CardTitle>Conversation History</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        {/* {conversation?.map((item) => (
-                            <div key={item.convoId}>
-                                <p>{item.groQuery}</p>
-                                <p>{item.response}</p>
-                            </div>
-                        ))} */}
+                        {conversation.length > 0 ? (
+                            conversation.map((item) => (
+                                <div key={item._id} className="mb-4 p-2 border-b last:border-b-0 space-y-3">
+                                    <p className="font-semibold">Query: {item.groQuery}</p>
+                                    <div>
+                                        <label htmlFor="" className="font-semibold">Summary:</label>
+                                        <p className="text-sm text-gray-700">{item.response || <span className="italic text-gray-400">No response yet</span>}</p>
+                                    </div>
+                                </div>
+                            ))
+                        ) : (
+                            <p className="text-gray-400 italic">No conversation history found.</p>
+                        )}
                     </CardContent>
                 </Card>
             </div>

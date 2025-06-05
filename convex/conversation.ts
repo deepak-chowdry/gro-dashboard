@@ -41,6 +41,6 @@ export const updateConversation = mutation({
 
 export const getConversation = query({
   handler: async (ctx) => {
-    return await ctx.db.query("conversations");
+    return await ctx.db.query("conversations").collect()
   },
 });
