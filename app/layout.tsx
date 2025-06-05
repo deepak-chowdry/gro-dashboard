@@ -4,6 +4,8 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
+import { ConvexClientProvider } from "@/components/ConvexClientProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,14 +33,18 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         cz-shortcut-listen="true"
       >
-        <SidebarProvider>
-          <AppSidebar />
-          <main className="w-full">
-            <Header />
-            {children}
-          </main>
+        <ConvexClientProvider>
+          <SidebarProvider>
+            <AppSidebar />
+            <main className="w-full">
+              <Header />
+              {children}
+            </main>
+            <Toaster />
 
-        </SidebarProvider>
+          </SidebarProvider>
+        </ConvexClientProvider>
+
       </body>
     </html>
   );

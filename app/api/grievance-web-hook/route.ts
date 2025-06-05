@@ -1,10 +1,14 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import crypto from "crypto";
+import { api } from "@/convex/_generated/api";
+import { ConvexHttpClient } from "convex/browser";
 
 export async function GET() {
   return NextResponse.json({ status: "webhook listening" }, { status: 200 });
 }
+
+const client = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
 
 export async function POST(req: NextRequest) {
   const secret = process.env.ELEVENLABS_WEBHOOK_SECRET; // Add this to your env variables
@@ -15,6 +19,11 @@ export async function POST(req: NextRequest) {
 
   if (event.type === "post_call_transcription") {
     console.log("event data", JSON.stringify(event.data, null, 2));
+    await client.mutation(api.conversation.updateConversation, {
+      id: event.data.dynamic_variables.system__call_sid,
+      response: event.data.analysis.transcript_summary,
+    });
+    console.log("Updated the conversation")
   }
 
   return NextResponse.json({ received: true }, { status: 200 });
