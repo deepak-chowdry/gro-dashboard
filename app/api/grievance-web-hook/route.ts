@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
   if (event.type === "post_call_transcription") {
     console.log("event data", JSON.stringify(event.data, null, 2));
     await client.mutation(api.conversation.updateConversation, {
-      id: event.data.dynamic_variables.system__call_sid,
+      id: event.data.metadata.phone_call.call_sid,
       response: event.data.analysis.transcript_summary,
     });
     console.log("Updated the conversation")
