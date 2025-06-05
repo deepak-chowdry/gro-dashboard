@@ -1,4 +1,4 @@
-import { Megaphone, Search, Settings } from "lucide-react"
+import { Megaphone, Settings } from "lucide-react"
 
 import {
     Sidebar,
@@ -19,11 +19,6 @@ const items = [
         icon: Megaphone,
     },
     {
-        title: "Search",
-        url: "#",
-        icon: Search,
-    },
-    {
         title: "Settings",
         url: "#",
         icon: Settings,
@@ -33,9 +28,9 @@ const items = [
 export function AppSidebar() {
     return (
         <Sidebar collapsible="icon">
-            <SidebarHeader>
-                <SidebarMenu>
-                    <SidebarMenuItem className="flex items-center justify-between group-data-[collapsible=icon]:px-0.5 pl-2">
+            <SidebarHeader className="h-14">
+                <SidebarMenu className="h-full">
+                    <SidebarMenuItem className="flex items-center justify-between group-data-[collapsible=icon]:px-0.5 pl-2 h-full">
                         <h3 className="text-sm font-bold uppercase state-[collapsed]:hidden group-data-[collapsible=icon]:hidden">GRO</h3>
                         <SidebarTrigger />
                     </SidebarMenuItem>

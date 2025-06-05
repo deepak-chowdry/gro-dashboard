@@ -8,8 +8,8 @@ export async function PUT(req: NextRequest) {
   // Parse the URL to get the query parameters
   const { searchParams } = new URL(req.url);
   const id = searchParams.get("id");
-  const { status, resolution_notes, officer_closed_by, final_status, grievance_closing_date } = await req.json();
-  console.log(status, resolution_notes, officer_closed_by, final_status, grievance_closing_date)
+  const body = await req.json();
+  console.log(id)
 
   if (!id) {
     return NextResponse.json(
@@ -22,16 +22,19 @@ export async function PUT(req: NextRequest) {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${GRM_API_TOKEN}`,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        status,
-        resolution_notes,
-        officer_closed_by,
-        final_status,
-        grievance_closing_date,
+        status: body.status,
+        resolution_notes: body.resolution_notes,
+        officer_closed_by: body.officer_closed_by,
+        final_status: body.final_status,
+        grievance_closing_date: new Date(body.grievance_closing_date).toISOString(),
       }),
     });
+    // console.log(response)
     const grievanceJson = await response.json();
+    console.log(grievanceJson)
     return NextResponse.json(grievanceJson);
   } catch (error) {
     console.error("Error fetching grievances:", error);
@@ -41,3 +44,11 @@ export async function PUT(req: NextRequest) {
     );
   }
 }
+
+// {
+//   "status": "string",
+//   "resolution_notes": "string",
+//   "officer_closed_by": "string",
+//   "final_status": "string",
+//   "grievance_closing_date": "string"
+// }

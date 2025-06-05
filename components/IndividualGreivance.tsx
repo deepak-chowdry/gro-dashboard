@@ -19,6 +19,7 @@ import {
     BreadcrumbSeparator
 } from "@/components/ui/breadcrumb"
 import Link from "next/link"
+import Notify from "./Notify"
 
 type Grievance = {
     cpgrams_category: string;
@@ -460,6 +461,10 @@ export default function IndividualGreivancePage({ greivanceId }: { greivanceId: 
                         </div>
                     </TabsContent>
 
+                    <TabsContent value="notify" className="mt-6">
+                        <Notify />
+                    </TabsContent>
+
                     <TabsContent value="resolution" className="mt-6">
                         <div className="space-y-6">
                             {loading ? (
@@ -490,10 +495,10 @@ export default function IndividualGreivancePage({ greivanceId }: { greivanceId: 
                                                 <SelectContent>
                                                     <SelectGroup>
                                                         <SelectLabel>Status</SelectLabel>
-                                                        <SelectItem value="active">Active</SelectItem>
-                                                        <SelectItem value="tender_issue">Tender issue</SelectItem>
-                                                        <SelectItem value="closed_with_resolution">Closed with resolution</SelectItem>
-                                                        <SelectItem value="closed_without_resolution">Closed without resolution</SelectItem>
+                                                        <SelectItem value="Active">Active</SelectItem>
+                                                        <SelectItem value="Tender Issued">Tender Issued</SelectItem>
+                                                        <SelectItem value="Closed with resolution">Closed with resolution</SelectItem>
+                                                        <SelectItem value="Closed without resolution">Closed without resolution</SelectItem>
                                                     </SelectGroup>
                                                 </SelectContent>
                                             </Select>
@@ -509,46 +514,7 @@ export default function IndividualGreivancePage({ greivanceId }: { greivanceId: 
                     </TabsContent>
 
 
-                    <TabsContent value="notify" className="mt-6">
-                        <div className="space-y-6">
-                            {loading ? (
-                                <ResolutionSkeleton />
-                            ) : (
-                                <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
-                                    <Card>
-                                        <CardHeader>
-                                            <CardTitle>Notify User</CardTitle>
-                                        </CardHeader>
-                                        <CardContent>
-                                            <div className="space-y-6">
-                                                <div>
-                                                    <Textarea
-                                                        value={resolution.resolution_notes}
-                                                        onChange={(e) => setResolution({ ...resolution, resolution_notes: e.target.value })}
-                                                        placeholder="Enter your message"
-                                                        className="h-24"
-                                                        disabled={updating}
-                                                    />
-                                                </div>
-                                                <Button onClick={updateResolution} disabled={updating}>
-                                                    {updating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                                    {updating ? "Sending..." : "Send"}
-                                                </Button>
-                                            </div>
-                                        </CardContent>
-                                    </Card>
-                                    <Card className="bg-gray-50">
-                                        <CardHeader>
-                                            <CardTitle>Conversation History</CardTitle>
-                                        </CardHeader>
-                                        <CardContent>
 
-                                        </CardContent>
-                                    </Card>
-                                </div>
-                            )}
-                        </div>
-                    </TabsContent>
                 </Tabs>
             </div>
         </div>
