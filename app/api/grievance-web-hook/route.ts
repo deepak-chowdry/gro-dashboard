@@ -1,8 +1,8 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import crypto from "crypto";
 import { api } from "@/convex/_generated/api";
 import { ConvexHttpClient } from "convex/browser";
+import crypto from "crypto";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 export async function GET() {
   return NextResponse.json({ status: "webhook listening" }, { status: 200 });
@@ -20,10 +20,10 @@ export async function POST(req: NextRequest) {
   if (event.type === "post_call_transcription") {
     console.log("event data", JSON.stringify(event.data, null, 2));
     await client.mutation(api.conversation.updateConversation, {
-      id: event.data.metadata.phone_call.call_sid,
+      convoId: event.data.metadata.phone_call.call_sid,
       response: event.data.analysis.transcript_summary,
     });
-    console.log("Updated the conversation")
+    console.log("Updated the conversation");
   }
 
   return NextResponse.json({ received: true }, { status: 200 });

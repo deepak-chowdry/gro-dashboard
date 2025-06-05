@@ -19,19 +19,28 @@ export const createConversation = mutation({
 
 export const updateConversation = mutation({
   args: {
-    id: v.id("conversations"),
+    convoId: v.string(),
     response: v.string(),
   },
   handler: async (ctx, args) => {
-    await ctx.db.patch(args.id, {
+    // Find the conversation by convoId
+    const convo = await ctx.db
+      .query("conversations")
+      .filter(q => q.eq(q.field("convoId"), args.convoId))
+      .first();
+
+    if (!convo) {
+      throw new Error("Conversation not found");
+    }
+
+    await ctx.db.patch(convo._id, {
       response: args.response,
     });
   },
 });
 
-
 export const getConversation = query({
-    handler: async (ctx) => {
-        return await ctx.db.query("conversations");
-    }
-})
+  handler: async (ctx) => {
+    return await ctx.db.query("conversations");
+  },
+});
