@@ -9,7 +9,6 @@ export async function PUT(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const id = searchParams.get("id");
   const body = await req.json();
-  console.log(id)
 
   if (!id) {
     return NextResponse.json(
@@ -34,7 +33,6 @@ export async function PUT(req: NextRequest) {
     });
     // console.log(response)
     const grievanceJson = await response.json();
-    console.log(grievanceJson)
     return NextResponse.json(grievanceJson);
   } catch (error) {
     console.error("Error fetching grievances:", error);

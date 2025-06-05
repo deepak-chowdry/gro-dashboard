@@ -6,7 +6,6 @@ const GRM_API_TOKEN = process.env.GRM_API_TOKEN;
 const USER_ID = process.env.USER_ID;
 
 export async function GET() {
-  console.log("I'm here....");
   try {
     const response = await fetch(
       `${GRIEVANCES_API_URL}/grievances/user/${USER_ID}`,
@@ -17,7 +16,6 @@ export async function GET() {
       }
     );
     const data = await response.json();
-    console.log(data);
     return NextResponse.json(data);
   } catch (error) {
     console.error("Error fetching grievances:", error);
