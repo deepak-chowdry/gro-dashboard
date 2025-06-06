@@ -33,7 +33,7 @@ const mockDataByRole = {
   },
   CPO: {
     noAction: 10,
-    closed: 6,
+    closed: 7,
     waitingForDoc: 7,
   },
   SPO: {
@@ -41,9 +41,39 @@ const mockDataByRole = {
     closed: 9,
     waitingForDoc: 2,
   },
+  Secretary: {
+    noAction: 3,
+    closed: 6,
+    waitingForDoc: 2,
+  },
+  CPMG: {
+    noAction: 3,
+    closed: 9,
+    waitingForDoc: 2,
+  },
+  PMG: {
+    noAction: 3,
+    closed: 9,
+    waitingForDoc: 2,
+  },
+  PostMaster: {
+    noAction: 2,
+    closed: 21,
+    waitingForDoc: 2,
+  },
+  SubPostMaster: {
+    noAction: 3,
+    closed: 9,
+    waitingForDoc: 2,
+  },
+  BPM: {
+    noAction: 3,
+    closed: 9,
+    waitingForDoc: 3,
+  },
 };
 
-type Role = "SSPO" | "DPO" | "CPO" | "SPO";
+type Role = "SSPO" | "DPO" | "CPO" | "SPO" | "Secretary" | "CPMG" | "PMG" | "PostMaster" | "SubPostMaster" | "BPM";
 
 export default function Dashboard() {
   const [selectedRole, setSelectedRole] = useState<Role>("SSPO");
@@ -81,17 +111,26 @@ export default function Dashboard() {
               {selectedRole} <ChevronDown size={16} />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
+              <DropdownMenuItem onClick={() => handleRoleChange("Secretary")}>
+                Secretary
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleRoleChange("CPMG")}>
+                CPMG
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleRoleChange("PMG")}>
+                PMG
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={() => handleRoleChange("SSPO")}>
                 SSPO
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleRoleChange("DPO")}>
-                DPO
+              <DropdownMenuItem onClick={() => handleRoleChange("PostMaster")}>
+                Post Master
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleRoleChange("CPO")}>
-                CPO
+              <DropdownMenuItem onClick={() => handleRoleChange("SubPostMaster")}>
+                Sub-Post Master
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleRoleChange("SPO")}>
-                SPO
+              <DropdownMenuItem onClick={() => handleRoleChange("BPM")}>
+                Branch Post Master
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
