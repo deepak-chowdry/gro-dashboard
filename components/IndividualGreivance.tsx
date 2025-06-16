@@ -44,7 +44,7 @@ type Grievance = {
     updatedAt: string;
     version: number;
   };
-};
+}; 
 
 // User type based on your API response
 type User = {
