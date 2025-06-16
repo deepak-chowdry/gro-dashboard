@@ -21,12 +21,15 @@ type Conversation = {
 
 const Notify = ({ greivanceId }: { greivanceId: string }) => {
   const [message, setMessage] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("+91");
   const [conversation, setConversation] = useState<Conversation[]>([]);
   const conversationsData = useQuery(api.conversation.getConversation, {
     greivanceId,
   });
   const createConversation = useMutation(api.conversation.createConversation);
+  const agentId = process.env.NEXT_PUBLIC_AGENT_ID || "";
+  const agentPhoneNumberId =
+    process.env.NEXT_PUBLIC_AGENT_PHONE_NUMBER_ID || "";
 
   // Sync local state with query result
   useEffect(() => {
@@ -37,9 +40,11 @@ const Notify = ({ greivanceId }: { greivanceId: string }) => {
 
   const handleNotify = async () => {
     try {
+      console.log(message, phoneNumber);
+
       const response = await client.conversationalAi.twilioOutboundCall({
-        agent_id: "agent_01jwwmjdzzecpbk0j5jd1348cx",
-        agent_phone_number_id: "phnum_01jxvdchhdf199phjv7rcsazvv",
+        agent_id: agentId,
+        agent_phone_number_id: agentPhoneNumberId,
         to_number: phoneNumber,
         conversation_initiation_client_data: {
           dynamic_variables: {
@@ -49,8 +54,10 @@ const Notify = ({ greivanceId }: { greivanceId: string }) => {
         },
       });
       console.log(response);
+
       const data = response?.callSid;
       console.log(data);
+
       await createConversation({
         groQuery: message,
         convoId: data as string,
@@ -93,7 +100,16 @@ const Notify = ({ greivanceId }: { greivanceId: string }) => {
               />
               <Input
                 value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
+                onChange={(e) => {
+                  const numericValue = e.target.value.replace(/[^\d+]/g, "");
+                  if (
+                    numericValue.startsWith("+") ||
+                    !isNaN(Number(numericValue))
+                  ) {
+                    setPhoneNumber(numericValue);
+                  }
+                }}
+                type="tel"
                 placeholder="Enter phone number"
                 className="h-12"
               />
