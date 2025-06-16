@@ -6,6 +6,7 @@ const schema = defineSchema({
         groQuery: v.string(),
         convoId: v.string(),
         response: v.optional(v.string()),
+        greivanceId: v.string(),
     })
 })
 

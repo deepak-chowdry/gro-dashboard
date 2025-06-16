@@ -462,7 +462,7 @@ export default function IndividualGreivancePage({ greivanceId }: { greivanceId: 
                     </TabsContent>
 
                     <TabsContent value="notify" className="mt-6">
-                        <Notify />
+                        <Notify greivanceId={greivanceId} />
                     </TabsContent>
 
                     <TabsContent value="resolution" className="mt-6">

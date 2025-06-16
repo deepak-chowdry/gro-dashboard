@@ -6,12 +6,14 @@ export const createConversation = mutation({
     groQuery: v.string(),
     convoId: v.string(),
     response: v.optional(v.string()),
+    greivanceId: v.string(),
   },
   handler: async (ctx, args) => {
     const convoId = await ctx.db.insert("conversations", {
       groQuery: args.groQuery,
       convoId: args.convoId,
       response: args.response,
+      greivanceId: args.greivanceId,
     });
     return convoId;
   },
@@ -40,7 +42,10 @@ export const updateConversation = mutation({
 });
 
 export const getConversation = query({
-  handler: async (ctx) => {
-    return await ctx.db.query("conversations").collect()
+  args: {
+    greivanceId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.query("conversations").filter(q => q.eq(q.field("greivanceId"), args.greivanceId)).collect()
   },
 });
